@@ -11,7 +11,7 @@
         </li>
       </ul>
       <div class="main">
-        <Item/>
+        <Item v-for="(item,index) in listData" :key="index" :item="item"/>
       </div>
   </div>
 </template>
@@ -25,6 +25,8 @@ export default {
     return{
       titleNav:["热门","新书","免费","完本"],
       currentIndex:0,
+      listData:[],
+      list:{}
     }
   },
   components:{
@@ -33,11 +35,14 @@ export default {
   methods:{
     changIndex(index){
       this.currentIndex=index;
+      this.listData = this.list["ranklist"+index]
     }
   },
   created(){
         this.$http("/api/classify").then(res=>{
             console.log(res.data.list);
+            this.list = res.data.list;
+            this.listData=res.data.list.ranklist0;
         })
     }
 }
